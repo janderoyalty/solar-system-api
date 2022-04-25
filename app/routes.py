@@ -1,5 +1,4 @@
-from crypt import methods
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort, make_response
 
 
 class Planet():
@@ -9,6 +8,15 @@ class Planet():
 		self.description = description
 		self.circumference = circumference
 		self.length_of_year = length_of_year
+
+	def to_json(self): 
+		return {
+			"id" : self.id,
+			"name" : self.name,
+			"description" : self.description,
+			"circumference" : self.circumference,
+			"length_of_year" : self.length_of_year
+		}
 
 planets = [
 	Planet(1, "Mercury", "made mostly of rocks", 9522, 88), 
@@ -36,6 +44,18 @@ def get_all_planets():
 			"length of year": planet.length_of_year
 		})
 	return jsonify(planets_response)
+
+@planets_bp.route("/<id>", methods = ["GET"])
+def get_one_planet(id):
+	try:
+		id = int(id)
+	except:
+		return abort(make_response({"message":f"Planet {id} is invalid."}, 400))
+
+	for planet in planets:
+		if planet.id == id:
+			return jsonify(planet.to_json())
+	return abort(make_response({"message":f"Planet {id} not found."}, 404))
 
 
 
