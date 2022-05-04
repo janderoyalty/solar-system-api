@@ -17,3 +17,10 @@ class Planet(db.Model):
             "length_of_year" : self.length_of_year
         }
 
+    #update
+    def update(self, request_body):
+        self.name = request_body["name"]
+        self.description = request_body["description"]
+        self.circumference = request_body["circumference"]
+        self.length_of_year = request_body["length_of_year"]
+

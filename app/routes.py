@@ -86,15 +86,17 @@ def update_planet(id):
 
     request_body = request.get_json()
 
-    planet.name = request_body["name"]
-    planet.description = request_body["description"]
-    planet.circumference = request_body["circumference"]
-    planet.length_of_year = request_body["length_of_year"]
+    planet.update(request_body)
+    # planet.name = request_body["name"]
+    # planet.description = request_body["description"]
+    # planet.circumference = request_body["circumference"]
+    # planet.length_of_year = request_body["length_of_year"]
 
     db.session.commit()
 
     return make_response(f"Planet #{id} succesffully updated"), 200
 
+#MAKE PATCH REQUEST
 
 @planets_bp.route("/<id>", methods=["DELETE"])
 def delete_one_planet(id):
