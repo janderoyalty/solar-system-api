@@ -3,35 +3,6 @@ from app import db
 from app.models.planet import Planet
 
 
-# class Planet():
-# 	def __init__(self, id, name, description, circumference, length_of_year):
-# 		self.id = id
-# 		self.name = name
-# 		self.description = description
-# 		self.circumference = circumference
-# 		self.length_of_year = length_of_year
-
-# 	def to_json(self): 
-# 		return {
-# 			"id" : self.id,
-# 			"name" : self.name,
-# 			"description" : self.description,
-# 			"circumference" : self.circumference,
-# 			"length_of_year" : self.length_of_year
-# 		}
-
-# planets = [
-# 	Planet(1, "Mercury", "made mostly of rocks", 9522, 88), 
-# 	Planet(2, "Venus", "most like Earth", 23617, 225), 
-# 	Planet(3, "Earth", "you are here", 24889, 365),
-# 	Planet(4, "Mars", "the red planet", 13256, 687),
-# 	Planet(5, "Jupiter", "largest planet", 278985, 4320),
-# 	Planet(6, "Saturn", "sun's bae with all 7 rings", 235185, 10620),
-# 	Planet(7, "Uranus", "can only be seen with a telescope", 99739, 30240),
-# 	Planet(8, "Neptune", "it is an intense blue color", 96645, 59400),
-# 	Planet(9, "Pluto", "no dwarf in my book", 7144, 88920)
-# ]
-
 planets_bp = Blueprint("planets", __name__, url_prefix = "/planets")
 
 # CREATE PLANET
@@ -56,20 +27,10 @@ def get_all_planets():
 	planets_response = []
 	planets = Planet.query.all()
 	for planet in planets:
-		planets_response.append({
-			"id": planet.id,
-			"name": planet.name,
-			"description": planet.description,
-			"circumference": planet.circumference,
-			"length of year": planet.length_of_year
-		})
+		planets_response.append(planet.to_json())
+			
 	return jsonify(planets_response)
-    # planets_response = []
-    # planets = Planet.query.all()
-    # for planet in planets:
-    #     planets_response.append(planet.to_json())
-
-    # return jsonify(planets_response), 200
+    
 
 # VALIDATE ID
 def validate_planet(id):
@@ -89,20 +50,78 @@ def validate_planet(id):
 @planets_bp.route("/<id>", methods = ["GET"])
 def get_one_planet(id):
     planet = validate_planet(id)
-    # return jsonify({
-	# 		"id": planet.id,
-	# 		"name": planet.name,
-	# 		"description": planet.description,
-	# 		"circumference": planet.circumference,
-	# 		"length of year": planet.length_of_year
-	# })
     return jsonify(planet.to_json()), 200
 
 
 
+
 	# {
-	# 	name:
-	# 	description:
-	# 	circumference:
-	# 	length_of_year:
+	# 	"name": "Mercury"
+	# 	"description": "made mostly of rocks"
+	# 	"circumference": 9522
+	# 	"length_of_year": 88
+    # }
+
+	
+	# {
+	# 	"name": Venus
+	# 	"description": most like Earth
+	# 	"circumference": 23617
+	# 	"length_of_year":
+    # }
+	
+
+	# {
+	# 	"name": "Earth"
+	# 	"description": "you are here"
+	# 	"circumference": 24889
+	# 	"length_of_year": 365
+    # }
+
+
+	# {
+	# 	"name": "Mars"
+	# 	"description": "the red planet"
+	# 	"circumference": 13256
+	# 	"length_of_year": 687
+    # }
+
+
+	# {
+	# 	"name": "Jupiter",
+	# 	"description": "largest planet",
+	# 	"circumference": 278985,
+	# 	"length_of_year": 4320
+    # }
+
+
+	# {
+	# 	"name": "Saturn",
+	# 	"description": "sun's bae with all 7 rings",
+	# 	"circumference": 235185,
+	# 	"length_of_year": 10620
+    # }
+
+
+	# {
+	# 	"name": "Uranus",
+	# 	"description": "can only be seen with a telescope",
+	# 	"circumference": 99739,
+	# 	"length_of_year": 30240
+    # }
+
+
+	# {
+	# 	"name": "Neptune",
+	# 	"description": "it is an intense blue color",
+	# 	"circumference": 96645,
+	# 	"length_of_year": 59400
+    # }
+
+
+	# {
+	# 	"name": "Pluto",
+	# 	"description": "no dwarf in my book",
+	# 	"circumference": 7144,
+	# 	"length_of_year": 88920
     # }
