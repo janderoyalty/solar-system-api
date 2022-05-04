@@ -48,7 +48,7 @@ def create_planet():
 	db.session.add(new_planet)
 	db.session.commit()
 
-	return make_response(f"Planet {new_planet.name} has been successfully created", 201)
+	return make_response(f"Planet {new_planet.name} has been successfully created", 201) #use make response when you want to return something that is not json
 
 # GET ALL
 @planets_bp.route("", methods = ["GET"])
@@ -56,14 +56,15 @@ def get_all_planets():
 	planets_response = []
 	planets = Planet.query.all()
 	for planet in planets:
-		planets_response.append({
-			"id": planet.id,
-			"name": planet.name,
-			"description": planet.description,
-			"circumference": planet.circumference,
-			"length of year": planet.length_of_year
-		})
-	return jsonify(planets_response)
+		# planets_response.append({
+		# 	"id": planet.id,
+		# 	"name": planet.name,
+		# 	"description": planet.description,
+		# 	"circumference": planet.circumference,
+		# 	"length of year": planet.length_of_year
+		# })
+		planets_response.append(planet.to_json())
+	return jsonify(planets_response) #need jsonify when returning list
     # planets_response = []
     # planets = Planet.query.all()
     # for planet in planets:
@@ -99,10 +100,34 @@ def get_one_planet(id):
     return jsonify(planet.to_json()), 200
 
 
-
 	# {
 	# 	name:
 	# 	description:
 	# 	circumference:
 	# 	length_of_year:
     # }
+
+@planets_bp.route("/<id>", methods=["PUT"])
+def update_planet(id):
+    planet = validate_planet(id)
+
+    request_body = request.get_json()
+
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.circumference = request_body["circumference"]
+    planet.length_of_year = request_body["length_of_year"]
+
+    db.session.commit()
+
+    return make_response(f"Planet #{id} succesffully updated"), 200
+
+
+@planets_bp.route("/<id>", methods=["DELETE"])
+def delete_one_planet(id):
+    planet = validate_planet(id)
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return make_response(f"Planet #{id} was successfully deleted"), 200
