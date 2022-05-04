@@ -7,11 +7,11 @@ class Planet(db.Model):
     circumference = db.Column(db.Integer)
     length_of_year= db.Column(db.Integer)
     
-    def to_json(self):
+    def to_json(self): 
         return {
-			"id": self.id,
-			"name": self.name,
-			"description": self.description,
-			"circumference": self.circumference,
-			"length of year": self.length_of_year
-		}
+            "id" : self.id,
+            "name" : self.name,
+            "description" : self.description,
+            "circumference" : self.circumference,
+            "length_of_year" : self.length_of_year
+        }
