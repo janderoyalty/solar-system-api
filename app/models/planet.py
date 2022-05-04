@@ -24,3 +24,7 @@ class Planet(db.Model):
         self.circumference = request_body["circumference"]
         self.length_of_year = request_body["length_of_year"]
 
+    def create(cls, request_body):
+        new_planet = cls(name = request_body["name"], description = request_body["description"], circumference = request_body["circumference"], length_of_year = request_body["length_of_year"])
+
+        return new_planet
