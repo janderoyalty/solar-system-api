@@ -24,8 +24,25 @@ def create_planet():
 # GET ALL
 @planets_bp.route("", methods = ["GET"])
 def get_all_planets():
+
+	days_query = request.args.get("length_of_year")
+	name_query = request.args.get("name")
+	description_query = request.args.get("description")
+	circumference_query = request.args.get("circumference")
+
+	if days_query:
+		planets = Planet.query.filter_by(length_of_year = days_query)
+	elif name_query:
+		planets = Planet.query.filter_by(name = name_query)
+	elif description_query:
+		planets = Planet.query.filter_by(description = description_query)
+	elif circumference_query:
+		planets = Planet.query.filter_by(circumference = circumference_query)
+	else:
+		planets = Planet.query.all()
+
 	planets_response = []
-	planets = Planet.query.all()
+	
 	for planet in planets:
 		planets_response.append(planet.to_json())
 			
@@ -86,18 +103,18 @@ def delete_one_planet(id):
     db.session.commit()
 
     return make_response(f"Planet #{id} was successfully deleted"), 200
-	# 	"name": "Mercury"
-	# 	"description": "made mostly of rocks"
-	# 	"circumference": 9522
+	# 	{"name": "Mercury",
+	# 	"description": "made mostly of rocks",
+	# 	"circumference": 9522,
 	# 	"length_of_year": 88
     # }
 
 	
 	# {
-	# 	"name": Venus
-	# 	"description": most like Earth
-	# 	"circumference": 23617
-	# 	"length_of_year":
+	# 	"name": Venus,
+	# 	"description": most like Earth,
+	# 	"circumference": 23617,
+	# 	"length_of_year": 225
     # }
 	
 
@@ -110,9 +127,9 @@ def delete_one_planet(id):
 
 
 	# {
-	# 	"name": "Mars"
-	# 	"description": "the red planet"
-	# 	"circumference": 13256
+	# 	"name": "Mars",
+	# 	"description": "the red planet",
+	# 	"circumference": 13256,
 	# 	"length_of_year": 687
     # }
 
