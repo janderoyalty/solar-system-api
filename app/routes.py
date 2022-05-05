@@ -16,7 +16,7 @@ def create_planet():
 	db.session.add(new_planet)
 	db.session.commit()
 
-	return make_response(f"Planet {new_planet.name} has been successfully created", 201) #use make response when you want to return something that is not json
+	return jsonify(f"Planet {new_planet.name} has been successfully created"), 201 #use make response when you want to return something that is not json
 
 # GET ALL
 @planets_bp.route("", methods = ["GET"])
@@ -76,6 +76,7 @@ def get_one_planet(id):
 	# 	length_of_year:
     # }
 
+#PUT or update ONE PLANET
 @planets_bp.route("/<id>", methods=["PUT"])
 def update_planet(id):
     planet = validate_planet(id)
@@ -94,6 +95,7 @@ def update_planet(id):
 
 #MAKE PATCH REQUEST
 
+#DELETE ONE PLANET
 @planets_bp.route("/<id>", methods=["DELETE"])
 def delete_one_planet(id):
     planet = validate_planet(id)
