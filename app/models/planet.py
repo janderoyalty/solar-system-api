@@ -7,6 +7,8 @@ class Planet(db.Model):
     description = db.Column(db.String)
     circumference = db.Column(db.Integer)
     length_of_year= db.Column(db.Integer)
+    moons = db.relationship("Moon", back_populates = "planet")
+
     
     def to_json(self): 
         return {
