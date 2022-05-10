@@ -159,3 +159,29 @@ def delete_one_planet(id):
 	# 	"circumference": 7144,
 	# 	"length_of_year": 88920
     # }
+
+@planets_bp.route("/<planet_id>/moons", methods=["POST"])
+def add_moon_to_existing_planet(planet_id):
+	planet = validate_planet(planet_id)
+	request_body = request.get_json()
+
+	new_moon = Moon(size=request_body["size"], description=request_body["description"],
+	surface_gravity=request_body["surface_gravity"], planet_id=planet_id, planet=planet)
+
+	planet.moons.append(new_moon)
+
+	db.session.add(new_moon)
+	db.session.commit()
+	return jsonify(f"New moon has been added to {planet.name}"), 201
+
+
+@planets_bp.route("/<planet_id>/moons", methods=["GET"])
+def read_moons(planet_id):
+	planet = validate_planet(planet_id)
+
+	moons_response = []
+
+	for moon in planet.moons:
+		moons_response.append(moon.to_json())
+
+	return jsonify(moons_response), 200

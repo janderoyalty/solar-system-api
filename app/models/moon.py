@@ -8,6 +8,13 @@ class Moon(db.Model):
 	planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
 	planet = db.relationship("Planet", back_populates = "moons")
 
-
+	def to_json(self):
+		return {
+			"id": self.id,
+			"size": self.size,
+			"description": self.description,
+			"surface_gravity": self.surface_gravity,
+			"planet_id": self.planet_id
+		}
 
 	
